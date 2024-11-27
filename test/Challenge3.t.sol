@@ -18,13 +18,15 @@ contract Challenge3Test is BaseTest {
         setUpChallenges();
 
         challenge3 = new Challenge3(address(nftFlags));
-        vm.prank(msg.sender);
+        vm.prank(ADMIN);
         nftFlags.addAllowedMinter(address(challenge3));
     }
 
     function test_challenge3() public {
+        vm.startPrank(PLAYER, PLAYER);
+        
         new CallChallenge3(challenge3);
         
-        assertTrue(nftFlags.hasMinted(msg.sender, 3));
+        assertTrue(nftFlags.hasMinted(PLAYER, 3));
     }
 }

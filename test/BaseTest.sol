@@ -9,17 +9,23 @@ contract BaseTest is Test {
     Challenge1 challenge1;
     NFTFlags nftFlags;
 
+    address ADMIN; // the address used to deploy the challenges
+    address PLAYER; // the address used to interact with the challenges
+
     function setUpChallenges() internal {
-        nftFlags = new NFTFlags(msg.sender);
-        vm.prank(msg.sender);
+        ADMIN = msg.sender;
+        PLAYER = address(this);
+
+        nftFlags = new NFTFlags(ADMIN);
+        vm.prank(ADMIN);
         nftFlags.enable();
 
         challenge1 = new Challenge1(address(nftFlags));
-        vm.prank(msg.sender);
+        vm.prank(ADMIN);
         nftFlags.addAllowedMinter(address(challenge1));
 
        // Register team in challenge #1 (required for subsequent challenges)
-        vm.prank(msg.sender);
+        vm.prank(PLAYER);
         challenge1.registerTeam("Team Name", 2);
     }
 

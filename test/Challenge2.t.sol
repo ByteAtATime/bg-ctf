@@ -20,14 +20,16 @@ contract Challenge2Test is BaseTest {
         setUpChallenges();
 
         challenge2 = new Challenge2(address(nftFlags));
-        vm.prank(msg.sender);
+        vm.prank(ADMIN);
         nftFlags.addAllowedMinter(address(challenge2));
     }
 
     function test_challenge2() public {
+        vm.startPrank(PLAYER, PLAYER);
+
         CallChallenge2 callChallenge2 = new CallChallenge2();
         callChallenge2.callChallenge2(challenge2);
         
-        assertTrue(nftFlags.hasMinted(msg.sender, 2));
+        assertTrue(nftFlags.hasMinted(address(this), 2));
     }
 }

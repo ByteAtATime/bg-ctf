@@ -18,24 +18,25 @@ contract Challenge4Test is BaseTest {
     function setUp() public {
         setUpChallenges();
 
-        vm.prank(msg.sender); // we need to prank the owner to make the contract think it's the owner
+        vm.prank(ADMIN);
         challenge4 = new Challenge4(address(nftFlags));
-        vm.prank(msg.sender);
+        vm.prank(ADMIN);
         nftFlags.addAllowedMinter(address(challenge4));
 
-        vm.prank(msg.sender);
+        vm.prank(ADMIN);
         challenge4.addMinter(MINTER);
     }
 
     function test_challenge4() public {
-        bytes32 message = keccak256(abi.encode("BG CTF Challenge 4", msg.sender));
+        vm.startPrank(PLAYER, PLAYER);
+
+        bytes32 message = keccak256(abi.encode("BG CTF Challenge 4", PLAYER));
         bytes32 hash = message.toEthSignedMessageHash();
 
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(MINTER_PRIVATE_KEY, hash);
 
-        vm.prank(msg.sender);
         challenge4.mintFlag(MINTER, abi.encodePacked(r, s, v));
 
-        assertTrue(nftFlags.hasMinted(msg.sender, 4));
+        assertTrue(nftFlags.hasMinted(PLAYER, 4));
     }
 }

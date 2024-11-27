@@ -5,25 +5,24 @@ import {Test, console} from "forge-std/Test.sol";
 import {Challenge1} from "../src/Challenge1.sol";
 import {NFTFlags} from "../src/NFTFlags.sol";
 
-contract Challenge1Test is Test {
+contract BaseTest is Test {
     Challenge1 challenge1;
     NFTFlags nftFlags;
 
-    function setUp() public {
+    function setUpChallenges() internal {
         nftFlags = new NFTFlags(msg.sender);
         vm.prank(msg.sender);
         nftFlags.enable();
-        
+
         challenge1 = new Challenge1(address(nftFlags));
         vm.prank(msg.sender);
         nftFlags.addAllowedMinter(address(challenge1));
+
+       // Register team in challenge #1 (required for subsequent challenges)
+        vm.prank(msg.sender);
+        challenge1.registerTeam("Team Name", 2);
     }
 
-    function test_challenge1() public {
-        challenge1.registerTeam("Team Name", 2);
-        
-        assertTrue(nftFlags.hasMinted(address(this), 1));
-    }
 
     function onERC721Received(
         address,

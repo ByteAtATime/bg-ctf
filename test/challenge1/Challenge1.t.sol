@@ -2,8 +2,8 @@
 pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
-import {Challenge1} from "../src/Challenge1.sol";
-import {NFTFlags} from "../src/NFTFlags.sol";
+import {Challenge1} from "../../src/Challenge1.sol";
+import {NFTFlags} from "../../src/NFTFlags.sol";
 
 contract Challenge1Test is Test {
     Challenge1 challenge1;

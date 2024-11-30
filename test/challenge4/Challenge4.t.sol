@@ -4,9 +4,9 @@ pragma solidity ^0.8.13;
 import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
 import {console} from "forge-std/Test.sol";
-import {BaseTest} from "./BaseTest.sol";
-import {Challenge4} from "../src/Challenge4.sol";
-import {NFTFlags} from "../src/NFTFlags.sol";
+import {BaseTest} from "../BaseTest.sol";
+import {Challenge4} from "../../src/Challenge4.sol";
+import {NFTFlags} from "../../src/NFTFlags.sol";
 
 contract Challenge4Test is BaseTest {
     using MessageHashUtils for bytes32;

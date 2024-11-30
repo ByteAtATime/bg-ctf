@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import {BaseTest} from "./BaseTest.sol";
-import {Challenge3} from "../src/Challenge3.sol";
-import {NFTFlags} from "../src/NFTFlags.sol";
+import {BaseTest} from "../BaseTest.sol";
+import {Challenge3} from "../../src/Challenge3.sol";
+import {NFTFlags} from "../../src/NFTFlags.sol";
 
 contract CallChallenge3 {
     constructor(Challenge3 challenge3) {

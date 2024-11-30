@@ -4,9 +4,9 @@ pragma solidity ^0.8.13;
 import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
 import {console} from "forge-std/Test.sol";
-import {BaseTest} from "./BaseTest.sol";
-import {Challenge6} from "../src/Challenge6.sol";
-import {NFTFlags} from "../src/NFTFlags.sol";
+import {BaseTest} from "../BaseTest.sol";
+import {Challenge6} from "../../src/Challenge6.sol";
+import {NFTFlags} from "../../src/NFTFlags.sol";
 
 interface IContract6Solution {
     function name() external view returns (string memory);

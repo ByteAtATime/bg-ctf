@@ -30,13 +30,17 @@ contract Challenge4Test is BaseTest {
     function test_challenge4() public {
         vm.startPrank(PLAYER, PLAYER);
 
+        // Step 1: reconstruct the same message as the challenge contract
         bytes32 message = keccak256(abi.encode("BG CTF Challenge 4", PLAYER));
         bytes32 hash = message.toEthSignedMessageHash();
 
+        // Step 2: sign this contract with the known private key (this is known because it is one of the hardhat accounts)
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(MINTER_PRIVATE_KEY, hash);
 
+        // Step 3: call the mintFlag function with the signature
         challenge4.mintFlag(MINTER, abi.encodePacked(r, s, v));
 
+        // DONE: You should have obtained the flag for challenge #4
         assertTrue(nftFlags.hasMinted(PLAYER, 4));
     }
 }

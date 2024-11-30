@@ -32,7 +32,7 @@ contract Challenge2Test is BaseTest {
         CallChallenge2 callChallenge2 = new CallChallenge2();
         // Step 2: call the challenge through the intermediary contract
         callChallenge2.callChallenge2(challenge2);
-        
+
         // DONE: You should have obtained the flag for challenge #2
         assertTrue(nftFlags.hasMinted(address(this), 2));
     }

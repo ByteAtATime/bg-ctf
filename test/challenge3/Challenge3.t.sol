@@ -26,11 +26,11 @@ contract Challenge3Test is BaseTest {
 
     function test_challenge3() public {
         vm.startPrank(PLAYER, PLAYER);
-        
+
         // Step 1: call the mintFlag function from inside the constructor
         // This will cause the code size of the constructor contract to be 0
         new CallChallenge3(challenge3);
-        
+
         // DONE: You should have obtained the flag for challenge #3
         assertTrue(nftFlags.hasMinted(PLAYER, 3));
     }

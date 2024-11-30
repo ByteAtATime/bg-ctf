@@ -19,7 +19,7 @@ contract Challenge1Test is Test {
         nftFlags = new NFTFlags(ADMIN);
         vm.prank(ADMIN);
         nftFlags.enable();
-        
+
         challenge1 = new Challenge1(address(nftFlags));
         vm.prank(ADMIN);
         nftFlags.addAllowedMinter(address(challenge1));
@@ -27,22 +27,17 @@ contract Challenge1Test is Test {
 
     function test_challenge1() public {
         vm.startPrank(PLAYER, PLAYER);
-        
+
         // Step 1: Register a team
         challenge1.registerTeam("Team Name", 2);
-        
+
         // DONE: You should have obtained the flag for challenge #1
         assertTrue(nftFlags.hasMinted(PLAYER, 1));
     }
 
     // required because this is a contract, which needs an ERC721Receiver implementation
     // if you're not using a contract (you probably shouldn't for this challenge), you can ignore this
-    function onERC721Received(
-        address,
-        address,
-        uint256,
-        bytes calldata
-    ) external pure returns (bytes4) {
+    function onERC721Received(address, address, uint256, bytes calldata) external pure returns (bytes4) {
         return this.onERC721Received.selector;
     }
 }

@@ -48,7 +48,7 @@ contract Challenge6Test is BaseTest {
         // note the gas limit here, it is important to set it to 200_000
         // the challenge expects from 190,000 to 200,000 gas
         // we set it to 200,000 because the calls will use some gas
-        callChallenge6.callChallenge6{ gas: 200_000 }(challenge6, code);
+        callChallenge6.callChallenge6{gas: 200_000}(challenge6, code);
 
         // DONE: You should have obtained the flag for challenge #6
         assertTrue(nftFlags.hasMinted(PLAYER, 6));

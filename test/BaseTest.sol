@@ -24,18 +24,12 @@ contract BaseTest is Test {
         vm.prank(ADMIN);
         nftFlags.addAllowedMinter(address(challenge1));
 
-       // Register team in challenge #1 (required for subsequent challenges)
+        // Register team in challenge #1 (required for subsequent challenges)
         vm.prank(PLAYER);
         challenge1.registerTeam("Team Name", 2);
     }
 
-
-    function onERC721Received(
-        address,
-        address,
-        uint256,
-        bytes calldata
-    ) external pure returns (bytes4) {
+    function onERC721Received(address, address, uint256, bytes calldata) external pure returns (bytes4) {
         return this.onERC721Received.selector;
     }
 }

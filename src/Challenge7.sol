@@ -5,6 +5,7 @@ import "./INFTFlags.sol";
 
 contract Challenge7Delegate {
     address public owner;
+
     event OwnerChange(address indexed owner);
 
     constructor(address _owner) {
@@ -35,7 +36,7 @@ contract Challenge7 {
     }
 
     fallback() external {
-        (bool result, ) = address(delegate).delegatecall(msg.data);
+        (bool result,) = address(delegate).delegatecall(msg.data);
         if (result) {
             this;
         }

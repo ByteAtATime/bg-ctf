@@ -22,8 +22,8 @@ contract Challenge6 {
     function mintFlag(uint256 code) public {
         require(code == count << 8, "Wrong code");
         require(
-            keccak256(abi.encodePacked(IContract6Solution(msg.sender).name())) ==
-                keccak256("BG CTF Challenge 6 Solution"),
+            keccak256(abi.encodePacked(IContract6Solution(msg.sender).name()))
+                == keccak256("BG CTF Challenge 6 Solution"),
             "Wrong name"
         );
         uint256 gas = gasleft();

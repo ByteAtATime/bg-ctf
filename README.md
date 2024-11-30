@@ -1,66 +1,29 @@
-## Foundry
+# BuidlGuidl CTF
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+This is my solution/guide repository for the [BuidlGuidl Capture the Flag (CTF)](https://ctf.buidlguidl.com/) challenges. They are designed to teach various Ethereum security concepts and smart contract vulnerabilities.
 
-Foundry consists of:
+## Repository Structure
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+The challenges themselves are located in the `src/` directory, taken directly from [the CTF's repository](https://github.com/BuidlGuidl/ctf-devcon/tree/main/packages/hardhat/contracts).
 
-## Documentation
+The solutions and guides are located in the `test/` directory, with each challenge having its own subdirectory. In each subdirectory, there is a `README.md` file that explains the challenge and a general solution, as well as a `ChallengeX.t.sol` file that contains an implementation of the solution.
 
-https://book.getfoundry.sh/
+## Running the Solutions
 
-## Usage
+This repository uses [Foundry](https://getfoundry.sh/). If you would like to tinker with this repository, you should install Foundry and clone the repository:
 
-### Build
-
-```shell
-$ forge build
+```bash
+git clone https://github.com/ByteAtATime/bg-ctf.git
 ```
 
-### Test
+Then, you have to install the dependencies (be patient, this may take a while):
 
-```shell
-$ forge test
+```bash
+foundry install
 ```
 
-### Format
+Finally, you can run the tests:
 
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+```bash
+foundry test
 ```

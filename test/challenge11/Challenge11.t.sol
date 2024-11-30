@@ -2,9 +2,9 @@
 pragma solidity ^0.8.13;
 
 import {console} from "forge-std/Test.sol";
-import {BaseTest} from "./BaseTest.sol";
-import {Challenge11} from "../src/Challenge11.sol";
-import {NFTFlags} from "../src/NFTFlags.sol";
+import {BaseTest} from "../BaseTest.sol";
+import {Challenge11} from "../../src/Challenge11.sol";
+import {NFTFlags} from "../../src/NFTFlags.sol";
 
 contract CallChallenge11 {
     function callChallenge11(Challenge11 challenge11) public {

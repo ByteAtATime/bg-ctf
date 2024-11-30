@@ -52,9 +52,6 @@ Congratulations! You've learned about contract interactions and the difference b
 
 Remember: Understanding how contracts interact with each other is fundamental to Ethereum development. This pattern is commonly used in proxy contracts and other advanced patterns!
 
-Thank you for the feedback! You're absolutely right. Here's how I would modify the Challenge 2 tutorial with your suggestions:
-
-
 ## Why This Matters
 Understanding the difference between `msg.sender` and `tx.origin` is crucial for smart contract security:
 

@@ -13,7 +13,7 @@ Each directory corresponds to a challenge, and contains a `README.md` that expla
 - [Challenge 5](./challenge5)
 - [Challenge 6](./challenge6)
 - [Challenge 7](./challenge7)
-- ~~Challenge 8~~ (WIP)
+- [Challenge 8](./challenge8)
 - [Challenge 9](./challenge9)
 - [Challenge 10](./challenge10)
 - [Challenge 11](./challenge11)

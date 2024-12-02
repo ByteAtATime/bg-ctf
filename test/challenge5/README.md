@@ -1,4 +1,4 @@
-# Challenge 5: The Reentrancy Race
+# Challenge 5: Give Me My Points!
 
 In this challenge, you need to accumulate enough points to mint a flag. However, points can only be claimed once... or can they?
 

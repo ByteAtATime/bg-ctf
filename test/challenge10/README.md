@@ -1,4 +1,4 @@
-# Challenge 10: The Hidden Flag
+# Challenge 10: Give 1 Get 1
 
 In this challenge, you need to discover a hidden minting mechanism in the NFT contract itself! The key lies in the `onERC721Received` function.
 

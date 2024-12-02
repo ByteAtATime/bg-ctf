@@ -1,4 +1,4 @@
-# Challenge 2: The Proxy Call
+# Challenge 2: Just Call Me Maybe
 
 In this challenge, you need to call a function through another contract. The contract will only mint your flag if you call it indirectly!
 

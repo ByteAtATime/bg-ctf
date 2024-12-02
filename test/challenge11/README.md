@@ -1,5 +1,4 @@
-# Challenge 11: The Bit Matcher
-**Difficulty**: ⭐⭐⭐⭐⭐ (5/5)
+# Challenge 11: Who can call me?
 
 In this challenge, you need to find a contract address whose last byte, when masked, matches your address's last byte. It combines both proxy calling and bit manipulation!
 

@@ -1,4 +1,4 @@
-# Challenge 12: The Block Header Oracle
+# Challenge 12: Give me the block!
 
 In this challenge, you need to understand the complex inner workings of blocks to form some data with the same hash as a block.
 

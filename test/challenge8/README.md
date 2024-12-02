@@ -1,4 +1,4 @@
-# Challenge 8: The Bytecode Mystery
+# Challenge 8: The unverified
 
 In this challenge, you're presented with raw bytecode for a contract. You need to understand what it does and how to interact with it to get your flag!
 

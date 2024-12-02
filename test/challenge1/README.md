@@ -1,4 +1,4 @@
-# Challenge 1: Team Registration
+# Challenge 1: The Greeting
 
 In this challenge, you need to register a team and get your first flag NFT! The contract allows teams to register with a name and team size.
 

@@ -1,4 +1,4 @@
-# Challenge 6: The Gas Game
+# Challenge 6: Meet all the conditions
 
 In this challenge, you need to satisfy multiple conditions including contract interface requirements and precise gas control!
 

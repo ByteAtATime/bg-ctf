@@ -1,4 +1,4 @@
-# Challenge 9: Private Is Not Secret
+# Challenge 9: Password protected
 In this challenge, you need to figure out a password that's stored "privately" in the contract, with an additional twist of bit manipulation!
 
 ## Contract Overview

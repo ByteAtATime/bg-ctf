@@ -1,4 +1,4 @@
-# Challenge 3: The Constructor Call
+# Challenge 3: Empty Contract?
 
 In this challenge, you need to call the contract through another contract, but with a twist - the calling contract must have no code at the time of the call!
 

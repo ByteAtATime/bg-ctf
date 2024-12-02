@@ -1,5 +1,4 @@
-# Challenge 8: The Delegate Call Trap
-**Difficulty**: ⭐⭐⭐⭐⭐ (5/5)
+# Challenge 8: Delegate
 
 In this challenge, you need to become the owner of the contract through a delegatecall vulnerability to mint your flag.
 

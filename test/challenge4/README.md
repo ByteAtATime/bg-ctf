@@ -1,4 +1,4 @@
-# Challenge 4: The Known Private Key
+# Challenge 4: Who can sign this?
 
 In this challenge, you need to mint a flag using a signature from an authorized minter.
 

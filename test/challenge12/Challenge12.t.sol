@@ -93,6 +93,10 @@ contract Challenge12Test is BaseTest {
         assertTrue(nftFlags.hasMinted(PLAYER, 12));
     }
 
+    // The following are all artifacts of my poor decision to do this purely in Solidity
+    // It was definitely not intended for this purpose, so there is a lot of hacky code
+    // If you are interested, read on; otherwise, ignore all of this
+
     function parseBlockData(string memory json) public pure returns (BlockData memory) {
         return BlockData(
             vm.parseJsonBytes32(json, ".result.parentHash"),

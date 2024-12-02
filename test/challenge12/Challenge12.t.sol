@@ -2,14 +2,13 @@
 pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
-
 import {console} from "forge-std/Test.sol";
 import {BaseTest} from "../BaseTest.sol";
 import {Challenge12} from "../../src/Challenge12.sol";
 import {NFTFlags} from "../../src/NFTFlags.sol";
 
 contract Challenge12Test is BaseTest {
-    Challenge12 challenge12;
+    Challenge12 private challenge12;
 
     struct BlockData {
         bytes32 parentBlockHash;
@@ -45,17 +44,13 @@ contract Challenge12Test is BaseTest {
     function test_challenge12() public {
         vm.startPrank(PLAYER, PLAYER);
 
-        // Step 1: register for minting
         challenge12.preMintFlag();
         uint256 registeredBlockNumber = block.number + challenge12.futureBlocks();
 
-        // Go to 3 blocks in the future
         vm.roll(block.number + 3);
 
-        // Step 2: Get block data
         BlockData memory blockData = getBlockData(registeredBlockNumber);
 
-        // Step 3: Encode block data with RLP
         bytes[21] memory header = [
             RLPEncoder.rlpEncodeBytes32(blockData.parentBlockHash),
             RLPEncoder.rlpEncodeBytes32(blockData.sha3Uncles),
@@ -64,7 +59,7 @@ contract Challenge12Test is BaseTest {
             RLPEncoder.rlpEncodeBytes32(blockData.transactionsRoot),
             RLPEncoder.rlpEncodeBytes32(blockData.receiptsRoot),
             RLPEncoder.rlpEncodeBytes(blockData.logsBloom),
-            RLPEncoder.blankPrefix(), // difficulty
+            RLPEncoder.blankPrefix(),
             RLPEncoder.rlpEncodeUint(blockData.number),
             RLPEncoder.rlpEncodeUint(blockData.gasLimit),
             RLPEncoder.rlpEncodeUint(blockData.gasUsed),
@@ -80,22 +75,16 @@ contract Challenge12Test is BaseTest {
             RLPEncoder.rlpEncodeBytes32(blockData.parentBeaconBlockRoot)
         ];
 
-        // Convert header to array and RLP encode
         bytes[] memory headerArray = new bytes[](21);
         for (uint256 i = 0; i < 21; i++) {
             headerArray[i] = header[i];
         }
         bytes memory rlpEncodedHeader = RLPEncoder.rlpEncodeList(headerArray);
 
-        // Step 4: Mint flag
         challenge12.mintFlag(rlpEncodedHeader);
 
         assertTrue(nftFlags.hasMinted(PLAYER, 12));
     }
-
-    // The following are all artifacts of my poor decision to do this purely in Solidity
-    // It was definitely not intended for this purpose, so there is a lot of hacky code
-    // If you are interested, read on; otherwise, ignore all of this
 
     function parseBlockData(string memory json) public pure returns (BlockData memory) {
         return BlockData(
@@ -112,7 +101,7 @@ contract Challenge12Test is BaseTest {
             vm.parseJsonUint(json, ".result.timestamp"),
             vm.parseJsonBytes(json, ".result.extraData"),
             vm.parseJsonBytes32(json, ".result.mixHash"),
-            0x0000000000000000, // nonce was only used on PoW (now it is 32 bits of 0s)
+            0x0000000000000000, // nonce is now 8 bytes of zeros after switching to PoS
             vm.parseJsonUint(json, ".result.baseFeePerGas"),
             vm.parseJsonBytes32(json, ".result.withdrawalsRoot"),
             vm.parseJsonUint(json, ".result.blobGasUsed"),
@@ -123,9 +112,7 @@ contract Challenge12Test is BaseTest {
 
     function getBlockData(uint256 blockNumber) public returns (BlockData memory) {
         string[] memory inputs = constructBlockDataCurl(blockNumber);
-
         string memory res = string(vm.ffi(inputs));
-
         return parseBlockData(res);
     }
 
@@ -227,7 +214,6 @@ library RLPEncoder {
         return string(abi.encodePacked("0x", bufWithoutLeadingZeros));
     }
 
-    // Helper methods for generating RLP prefixes
     function bytes32Prefix() public pure returns (bytes memory) {
         return abi.encodePacked(uint8(0x80 + 32));
     }

@@ -56,7 +56,7 @@ contract Challenge12Test is BaseTest {
         BlockData memory blockData = getBlockData(registeredBlockNumber);
 
         // Step 3: Encode block data with RLP
-        bytes[30] memory header = [
+        bytes[21] memory header = [
             RLPEncoder.rlpEncodeBytes32(blockData.parentBlockHash),
             RLPEncoder.rlpEncodeBytes32(blockData.sha3Uncles),
             RLPEncoder.rlpEncodeAddress(blockData.miner),
@@ -81,8 +81,8 @@ contract Challenge12Test is BaseTest {
         ];
 
         // Convert header to array and RLP encode
-        bytes[] memory headerArray = new bytes[](30);
-        for (uint256 i = 0; i < 30; i++) {
+        bytes[] memory headerArray = new bytes[](21);
+        for (uint256 i = 0; i < 21; i++) {
             headerArray[i] = header[i];
         }
         bytes memory rlpEncodedHeader = RLPEncoder.rlpEncodeList(headerArray);
@@ -121,7 +121,7 @@ contract Challenge12Test is BaseTest {
         );
     }
 
-    function getBlockData(uint256 blockNumber) public view returns (BlockData memory) {
+    function getBlockData(uint256 blockNumber) public returns (BlockData memory) {
         string[] memory inputs = constructBlockDataCurl(blockNumber);
 
         string memory res = string(vm.ffi(inputs));
@@ -129,7 +129,7 @@ contract Challenge12Test is BaseTest {
         return parseBlockData(res);
     }
 
-    function constructBlockDataCurl(uint256 blockNumber) public view returns (string[] memory) {
+    function constructBlockDataCurl(uint256 blockNumber) public pure returns (string[] memory) {
         string[] memory inputs = new string[](7);
         inputs[0] = "curl";
         inputs[1] = "-s";
@@ -137,7 +137,7 @@ contract Challenge12Test is BaseTest {
         inputs[3] = "POST";
         inputs[4] = "https://rpc.ankr.com/optimism";
         inputs[5] = "-d";
-        inputs[6] = string.concat('{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["', RLPEncoder.uintToHexString(registeredBlockNumber), '",false],"id":1}');
+        inputs[6] = string.concat('{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["', RLPEncoder.uintToHexString(blockNumber), '",false],"id":1}');
 
         return inputs;
     }
@@ -150,8 +150,7 @@ library RLPEncoder {
 
     function rlpEncodeBytes(bytes memory value) internal pure returns (bytes memory) {
         if (value.length == 0) {
-            uint8 blankPrefix = 0x80;
-            return abi.encodePacked(blankPrefix);
+            return abi.encodePacked(blankPrefix());
         }
 
         if (value.length <= 55) {
@@ -225,19 +224,19 @@ library RLPEncoder {
     }
 
     // Helper methods for generating RLP prefixes
-    function bytes32Prefix() private pure returns (bytes memory) {
+    function bytes32Prefix() public pure returns (bytes memory) {
         return abi.encodePacked(uint8(0x80 + 32));
     }
 
-    function addressPrefix() private pure returns (bytes memory) {
+    function addressPrefix() public pure returns (bytes memory) {
         return abi.encodePacked(uint8(0x80 + 20));
     }
 
-    function blankPrefix() private pure returns (bytes memory) {
+    function blankPrefix() public pure returns (bytes memory) {
         return abi.encodePacked(uint8(0x80));
     }
 
-    function noncePrefix() private pure returns (bytes memory) {
+    function noncePrefix() public pure returns (bytes memory) {
         return abi.encodePacked(uint8(0x80 + 8));
     }
 }

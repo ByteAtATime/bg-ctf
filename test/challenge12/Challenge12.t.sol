@@ -137,7 +137,11 @@ contract Challenge12Test is BaseTest {
         inputs[3] = "POST";
         inputs[4] = "https://rpc.ankr.com/optimism";
         inputs[5] = "-d";
-        inputs[6] = string.concat('{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["', RLPEncoder.uintToHexString(blockNumber), '",false],"id":1}');
+        inputs[6] = string.concat(
+            '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["',
+            RLPEncoder.uintToHexString(blockNumber),
+            '",false],"id":1}'
+        );
 
         return inputs;
     }
@@ -169,7 +173,7 @@ library RLPEncoder {
         for (uint256 i = 0; i < values.length; i++) {
             rlpEncodedValues = abi.encodePacked(rlpEncodedValues, values[i]);
         }
-        
+
         if (rlpEncodedValues.length <= 55) {
             uint8 prefix = 0xc0 + uint8(rlpEncodedValues.length);
             return abi.encodePacked(prefix, rlpEncodedValues);
@@ -203,7 +207,7 @@ library RLPEncoder {
         if (value == 0) {
             return "0x";
         }
-        
+
         bytes memory buffer = new bytes(64);
         uint256 index = 64;
         while (value != 0) {

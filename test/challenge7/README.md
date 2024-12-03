@@ -1,4 +1,4 @@
-# Challenge 8: Delegate
+# Challenge 7: Delegate
 
 In this challenge, you need to become the owner of the contract through a delegatecall vulnerability to mint your flag.
 

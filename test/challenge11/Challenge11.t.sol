@@ -30,21 +30,35 @@ contract Challenge11Test is BaseTest {
     function test_challenge11() public {
         vm.startPrank(PLAYER, PLAYER);
 
+        // Step 2: get the bytecode of CallChallenge11 and calculate its hash
+        bytes memory callerBytecode = type(CallChallenge11).creationCode;
+        bytes32 bytecodeHash = keccak256(callerBytecode);
+
+        uint256 salt = 0;
+
+        // Step 3: keep trying salts until the deployed address matches
         while (true) {
-            // Step 2: keep deploying a contract until the masked addresses match
-            CallChallenge11 caller = new CallChallenge11();
+            bytes32 deployedAddressBytes = keccak256(abi.encodePacked(bytes1(0xff), PLAYER, salt, bytecodeHash));
+            address deployedAddress = address(uint160(uint256(deployedAddressBytes)));
 
-            // Here, the last byte of each address is at index 19 (20th byte)
-            uint8 senderLastByte = uint8(abi.encodePacked(address(caller))[19]);
-            uint8 originLastByte = uint8(abi.encodePacked(PLAYER)[19]);
+            uint8 senderLast = uint8(abi.encodePacked(deployedAddress)[19]);
+            uint8 originLast = uint8(abi.encodePacked(PLAYER)[19]);
 
-            // Check if the expected bits match
-            // 0x15 = 0b00010101, so we're checking if the 1st, 3rd, and 5th bits match (counting from the right)
-            if ((senderLastByte & 0x15) == (originLastByte & 0x15)) {
-                // If they match, call the contract (otherwise, deploy another contract and try again)
+            if ((senderLast & 0x15) == (originLast & 0x15)) {
+                // Step 4: deploy the contract with the correct salt
+                address addr;
+                assembly {
+                    addr := create2(0, add(callerBytecode, 0x20), mload(callerBytecode), salt)
+                }
+
+                assert(address(addr) == deployedAddress);
+
+                CallChallenge11 caller = CallChallenge11(addr);
                 caller.callChallenge11(challenge11);
                 break;
             }
+
+            salt++;
         }
 
         // DONE: You should have obtained the flag for challenge #11

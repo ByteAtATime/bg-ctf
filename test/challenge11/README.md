@@ -102,4 +102,4 @@ assert(addr == deployedAddress);</code></pre>
 Congratulations! You've mastered CREATE2 and bit manipulation! 🎉
 </details>
 
-Remember: CREATE2 is a powerful tool for deterministic contract deployment, but always verify the deployed addresses match your calculations!
+Remember: CREATE2 is a powerful tool for deterministic contract deployment!

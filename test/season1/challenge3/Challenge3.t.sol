@@ -2,8 +2,8 @@
 pragma solidity ^0.8.13;
 
 import {BaseTest} from "../BaseTest.sol";
-import {Challenge3} from "../../src/Challenge3.sol";
-import {NFTFlags} from "../../src/NFTFlags.sol";
+import {Challenge3} from "../../../src/season1/Challenge3.sol";
+import {NFTFlags} from "../../../src/season1/NFTFlags.sol";
 
 contract CallChallenge3 {
     // constructor that calls mintFlag

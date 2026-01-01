@@ -10,18 +10,19 @@ The solutions and guides are located in the `test/` directory, with each challen
 
 ## Challenges
 
-- [Challenge 1](./test/challenge1)
-- [Challenge 2](./test/challenge2)
-- [Challenge 3](./test/challenge3)
-- [Challenge 4](./test/challenge4)
-- [Challenge 5](./test/challenge5)
-- [Challenge 6](./test/challenge6)
-- [Challenge 7](./test/challenge7)
-- [Challenge 8](./test/challenge8)
-- [Challenge 9](./test/challenge9)
-- [Challenge 10](./test/challenge10)
-- [Challenge 11](./test/challenge11)
-- [Challenge 12](./test/challenge12)
+### Season 1
+- [Challenge 1](./test/season1/challenge1)
+- [Challenge 2](./test/season1/challenge2)
+- [Challenge 3](./test/season1/challenge3)
+- [Challenge 4](./test/season1/challenge4)
+- [Challenge 5](./test/season1/challenge5)
+- [Challenge 6](./test/season1/challenge6)
+- [Challenge 7](./test/season1/challenge7)
+- [Challenge 8](./test/season1/challenge8)
+- [Challenge 9](./test/season1/challenge9)
+- [Challenge 10](./test/season1/challenge10)
+- [Challenge 11](./test/season1/challenge11)
+- [Challenge 12](./test/season1/challenge12)
 
 ## Running the Solutions
 

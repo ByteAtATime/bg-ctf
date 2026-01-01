@@ -3,8 +3,8 @@ pragma solidity ^0.8.13;
 
 import {console} from "forge-std/Test.sol";
 import {BaseTest} from "../BaseTest.sol";
-import {Challenge9} from "../../src/Challenge9.sol";
-import {NFTFlags} from "../../src/NFTFlags.sol";
+import {Challenge9} from "../../../src/season1/Challenge9.sol";
+import {NFTFlags} from "../../../src/season1/NFTFlags.sol";
 
 contract Challenge10Test is BaseTest {
     function setUp() public {

@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
 import {console} from "forge-std/Test.sol";
 import {BaseTest} from "../BaseTest.sol";
-import {NFTFlags} from "../../src/NFTFlags.sol";
+import {NFTFlags} from "../../../src/season1/NFTFlags.sol";
 
 contract Challenge8Test is BaseTest {
     address challenge8;

@@ -3,9 +3,9 @@ pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
 import {BaseTest} from "../BaseTest.sol";
-import {Challenge1} from "../../src/Challenge1.sol";
-import {Challenge2} from "../../src/Challenge2.sol";
-import {NFTFlags} from "../../src/NFTFlags.sol";
+import {Challenge1} from "../../../src/season1/Challenge1.sol";
+import {Challenge2} from "../../../src/season1/Challenge2.sol";
+import {NFTFlags} from "../../../src/season1/NFTFlags.sol";
 
 contract CallChallenge2 {
     // intermediary contract: tx.origin would be the player, while msg.sender would be this contract

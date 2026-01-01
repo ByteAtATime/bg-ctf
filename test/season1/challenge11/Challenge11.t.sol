@@ -3,8 +3,8 @@ pragma solidity ^0.8.13;
 
 import {console} from "forge-std/Test.sol";
 import {BaseTest} from "../BaseTest.sol";
-import {Challenge11} from "../../src/Challenge11.sol";
-import {NFTFlags} from "../../src/NFTFlags.sol";
+import {Challenge11} from "../../../src/season1/Challenge11.sol";
+import {NFTFlags} from "../../../src/season1/NFTFlags.sol";
 
 // Step 1: create an intermediary contract to call mintFlag
 contract CallChallenge11 {

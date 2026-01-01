@@ -4,8 +4,8 @@ pragma solidity ^0.8.13;
 import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 import {console} from "forge-std/Test.sol";
 import {BaseTest} from "../BaseTest.sol";
-import {Challenge12} from "../../src/Challenge12.sol";
-import {NFTFlags} from "../../src/NFTFlags.sol";
+import {Challenge12} from "../../../src/season1/Challenge12.sol";
+import {NFTFlags} from "../../../src/season1/NFTFlags.sol";
 
 contract Challenge12Test is BaseTest {
     Challenge12 private challenge12;
@@ -122,7 +122,7 @@ contract Challenge12Test is BaseTest {
         inputs[1] = "-s";
         inputs[2] = "-X";
         inputs[3] = "POST";
-        inputs[4] = "https://rpc.ankr.com/optimism";
+        inputs[4] = "https://mainnet.optimism.io";
         inputs[5] = "-d";
         inputs[6] = string.concat(
             '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["',

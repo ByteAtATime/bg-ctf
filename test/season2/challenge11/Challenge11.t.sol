@@ -1,0 +1,247 @@
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.13;
+
+import {Test, console} from "forge-std/Test.sol";
+import {BaseTest} from "../BaseTest.sol";
+import {Season2Challenge11} from "../../../src/season2/Season2Challenge11.sol";
+
+contract Challenge11Test is BaseTest {
+    Season2Challenge11 challenge11;
+
+    struct BlockData {
+        bytes32 parentBlockHash;
+        bytes32 sha3Uncles;
+        address miner;
+        bytes32 stateRoot;
+        bytes32 transactionsRoot;
+        bytes32 receiptsRoot;
+        bytes logsBloom;
+        uint256 number;
+        uint256 gasLimit;
+        uint256 gasUsed;
+        uint256 timestamp;
+        bytes extraData;
+        bytes32 mixHash;
+        bytes8 nonce;
+        uint256 baseFeePerGas;
+        bytes32 withdrawalsRoot;
+        uint256 blobGasUsed;
+        uint256 excessBlobGas;
+        bytes32 parentBeaconBlockRoot;
+    }
+
+    function setUp() public {
+        setUpChallenges();
+
+        vm.startPrank(ADMIN);
+        challenge11 = new Season2Challenge11(address(nftFlags));
+        nftFlags.addAllowedMinter(address(challenge11));
+        vm.stopPrank();
+    }
+
+    function test_challenge11() public {
+        vm.startPrank(PLAYER, PLAYER);
+
+        // Step 1: Pre-mint 10 times to increase our count
+        // The contract checks: random % 10 < count
+        // If count is 10, this condition is always true regardless of the random value (0-9)
+        // We also roll the block each time because the contract requires unique blocks.
+        for (uint i = 0; i < 10; i++) {
+            vm.roll(block.number + 1);
+            challenge11.preMintFlag();
+        }
+
+        // At this point, the registered block is the current block number.
+        // The contract expects us to provide the header for (registeredBlock + futureBlocks).
+
+        // Step 2: Roll forward to the valid block + 1
+        // We need to be at (target + 1) so that blockhash(target) is available
+        uint256 futureBlocks = challenge11.futureBlocks();
+        uint256 targetBlockNumber = block.number + futureBlocks;
+        
+        vm.roll(targetBlockNumber + 1);
+
+        // Step 3: Get block data for the target block and RLP encode it
+        BlockData memory blockData = getBlockData(targetBlockNumber);
+
+        bytes[21] memory header = [
+            RLPEncoder.rlpEncodeBytes32(blockData.parentBlockHash),
+            RLPEncoder.rlpEncodeBytes32(blockData.sha3Uncles),
+            RLPEncoder.rlpEncodeAddress(blockData.miner),
+            RLPEncoder.rlpEncodeBytes32(blockData.stateRoot),
+            RLPEncoder.rlpEncodeBytes32(blockData.transactionsRoot),
+            RLPEncoder.rlpEncodeBytes32(blockData.receiptsRoot),
+            RLPEncoder.rlpEncodeBytes(blockData.logsBloom),
+            RLPEncoder.blankPrefix(), // difficulty is 0 in PoS
+            RLPEncoder.rlpEncodeUint(blockData.number),
+            RLPEncoder.rlpEncodeUint(blockData.gasLimit),
+            RLPEncoder.rlpEncodeUint(blockData.gasUsed),
+            RLPEncoder.rlpEncodeUint(blockData.timestamp),
+            RLPEncoder.rlpEncodeBytes(blockData.extraData),
+            RLPEncoder.rlpEncodeBytes32(blockData.mixHash),
+            RLPEncoder.noncePrefix(),
+            abi.encodePacked(blockData.nonce),
+            RLPEncoder.rlpEncodeUint(blockData.baseFeePerGas),
+            RLPEncoder.rlpEncodeBytes32(blockData.withdrawalsRoot),
+            RLPEncoder.rlpEncodeUint(blockData.blobGasUsed),
+            RLPEncoder.rlpEncodeUint(blockData.excessBlobGas),
+            RLPEncoder.rlpEncodeBytes32(blockData.parentBeaconBlockRoot)
+        ];
+
+        bytes[] memory headerArray = new bytes[](21);
+        for (uint256 i = 0; i < 21; i++) {
+            headerArray[i] = header[i];
+        }
+        bytes memory rlpEncodedHeader = RLPEncoder.rlpEncodeList(headerArray);
+
+        // Step 4: Mint the flag
+        challenge11.mintFlag(rlpEncodedHeader);
+
+        // DONE: You should have obtained the flag for challenge #11
+        assertTrue(nftFlags.hasMinted(PLAYER, 11));
+    }
+
+    function getBlockData(uint256 blockNumber) public returns (BlockData memory) {
+        string[] memory inputs = constructBlockDataCurl(blockNumber);
+        string memory res = string(vm.ffi(inputs));
+        return parseBlockData(res);
+    }
+
+    function constructBlockDataCurl(uint256 blockNumber) public pure returns (string[] memory) {
+        string[] memory inputs = new string[](7);
+        inputs[0] = "curl";
+        inputs[1] = "-s";
+        inputs[2] = "-X";
+        inputs[3] = "POST";
+        inputs[4] = "https://mainnet.optimism.io";
+        inputs[5] = "-d";
+        inputs[6] = string.concat(
+            '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["',
+            RLPEncoder.uintToHexString(blockNumber),
+            '",false],"id":1}'
+        );
+        return inputs;
+    }
+
+    function parseBlockData(string memory json) public pure returns (BlockData memory) {
+        return BlockData(
+            vm.parseJsonBytes32(json, ".result.parentHash"),
+            vm.parseJsonBytes32(json, ".result.sha3Uncles"),
+            vm.parseJsonAddress(json, ".result.miner"),
+            vm.parseJsonBytes32(json, ".result.stateRoot"),
+            vm.parseJsonBytes32(json, ".result.transactionsRoot"),
+            vm.parseJsonBytes32(json, ".result.receiptsRoot"),
+            vm.parseJsonBytes(json, ".result.logsBloom"),
+            vm.parseJsonUint(json, ".result.number"),
+            vm.parseJsonUint(json, ".result.gasLimit"),
+            vm.parseJsonUint(json, ".result.gasUsed"),
+            vm.parseJsonUint(json, ".result.timestamp"),
+            vm.parseJsonBytes(json, ".result.extraData"),
+            vm.parseJsonBytes32(json, ".result.mixHash"),
+            0x0000000000000000,
+            vm.parseJsonUint(json, ".result.baseFeePerGas"),
+            vm.parseJsonBytes32(json, ".result.withdrawalsRoot"),
+            vm.parseJsonUint(json, ".result.blobGasUsed"),
+            vm.parseJsonUint(json, ".result.excessBlobGas"),
+            vm.parseJsonBytes32(json, ".result.parentBeaconBlockRoot")
+        );
+    }
+}
+
+// Reuse RLPEncoder from S1C12
+library RLPEncoder {
+    function rlpEncodeUint(uint256 value) internal pure returns (bytes memory) {
+        return rlpEncodeBytes(stripLeadingZeros(value));
+    }
+
+    function rlpEncodeBytes(bytes memory value) internal pure returns (bytes memory) {
+        if (value.length == 0) {
+            return abi.encodePacked(blankPrefix());
+        }
+
+        if (value.length <= 55) {
+            uint8 prefix = 0x80 + uint8(value.length);
+            return abi.encodePacked(prefix, value);
+        }
+
+        bytes memory length = stripLeadingZeros(value.length);
+        uint8 lengthPrefix = 0xb7 + uint8(length.length);
+
+        return abi.encodePacked(lengthPrefix, length, value);
+    }
+
+    function rlpEncodeList(bytes[] memory values) internal pure returns (bytes memory) {
+        bytes memory rlpEncodedValues;
+        for (uint256 i = 0; i < values.length; i++) {
+            rlpEncodedValues = abi.encodePacked(rlpEncodedValues, values[i]);
+        }
+
+        if (rlpEncodedValues.length <= 55) {
+            uint8 prefix = 0xc0 + uint8(rlpEncodedValues.length);
+            return abi.encodePacked(prefix, rlpEncodedValues);
+        }
+
+        bytes memory length = stripLeadingZeros(rlpEncodedValues.length);
+        uint8 lengthPrefix = 0xf7 + uint8(length.length);
+
+        return abi.encodePacked(lengthPrefix, length, rlpEncodedValues);
+    }
+
+    function stripLeadingZeros(uint256 value) internal pure returns (bytes memory) {
+        bytes memory packedValue = new bytes(0);
+        while (value > 0) {
+            packedValue = abi.encodePacked(uint8(value % 256), packedValue);
+            value /= 256;
+        }
+
+        return packedValue;
+    }
+
+    function rlpEncodeBytes32(bytes32 value) internal pure returns (bytes memory) {
+        return abi.encodePacked(bytes32Prefix(), value);
+    }
+
+    function rlpEncodeAddress(address value) internal pure returns (bytes memory) {
+        return abi.encodePacked(addressPrefix(), value);
+    }
+
+    function uintToHexString(uint256 value) internal pure returns (string memory) {
+        if (value == 0) {
+            return "0x";
+        }
+
+        bytes memory buffer = new bytes(64);
+        uint256 index = 64;
+        while (value != 0) {
+            index--;
+            buffer[index] = bytes1(uint8(48 + uint256(value) % 16));
+            if (uint8(buffer[index]) > 57) {
+                buffer[index] = bytes1(uint8(uint8(buffer[index]) + 39));
+            }
+            value /= 16;
+        }
+
+        bytes memory bufWithoutLeadingZeros = new bytes(64 - index);
+        for (uint256 i = 0; i < 64 - index; i++) {
+            bufWithoutLeadingZeros[i] = buffer[index + i];
+        }
+
+        return string(abi.encodePacked("0x", bufWithoutLeadingZeros));
+    }
+
+    function bytes32Prefix() public pure returns (bytes memory) {
+        return abi.encodePacked(uint8(0x80 + 32));
+    }
+
+    function addressPrefix() public pure returns (bytes memory) {
+        return abi.encodePacked(uint8(0x80 + 20));
+    }
+
+    function blankPrefix() public pure returns (bytes memory) {
+        return abi.encodePacked(uint8(0x80));
+    }
+
+    function noncePrefix() public pure returns (bytes memory) {
+        return abi.encodePacked(uint8(0x80 + 8));
+    }
+}

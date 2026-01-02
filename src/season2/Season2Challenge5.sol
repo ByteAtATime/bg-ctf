@@ -10,7 +10,7 @@ contract Season2Challenge5 {
         nftContract = _nftContract;
     }
 
-    function mintFlag(uint[] memory data1, uint[] memory data2) public {
+    function mintFlag(uint256[] memory data1, uint256[] memory data2) public {
         uint256 tokenIdCounter = INFTFlags(nftContract).tokenIdCounter();
         uint256 counter1;
         uint256 counter2;

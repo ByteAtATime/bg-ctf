@@ -16,7 +16,7 @@ contract Season2Challenge4 {
     function mintFlag() external {
         _paid = false;
 
-        (bool ok, ) = msg.sender.call("");
+        (bool ok,) = msg.sender.call("");
         require(ok, "callback failed");
         require(_paid, "not paid");
 

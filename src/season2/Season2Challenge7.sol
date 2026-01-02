@@ -27,7 +27,7 @@ contract Season2Challenge7 {
     }
 
     function mint(bytes memory _data) public onlyMintFlag {
-        (bool success, ) = address(this).call(_data);
+        (bool success,) = address(this).call(_data);
         require(success, "call failed :(");
     }
 

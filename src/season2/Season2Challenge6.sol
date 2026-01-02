@@ -21,7 +21,7 @@ contract Season2Challenge6 {
 
     function claimPoints() public {
         require(points[tx.origin] == 0, "Already claimed points");
-        (bool success, ) = msg.sender.call("");
+        (bool success,) = msg.sender.call("");
         require(success, "External call failed");
 
         points[tx.origin] += 1;

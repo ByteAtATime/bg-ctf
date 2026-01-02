@@ -20,7 +20,7 @@ contract Challenge4Solution {
     receive() external payable {
         // Step 3: When called back, send the expected ETH to the challenge
         if (msg.sender == address(challenge)) {
-            (bool success, ) = address(challenge).call{value: 1 gwei}("");
+            (bool success,) = address(challenge).call{value: 1 gwei}("");
             require(success, "Failed to send ETH");
         }
     }

@@ -55,10 +55,10 @@ contract Challenge8Test is BaseTest {
 
         // Step 4: Deploy solution and execute
         Challenge8Solution solution = new Challenge8Solution(challenge8);
-        
+
         // Satisfy lock2 (balance >= 2) and fund the solve call (2 wei)
-        vm.deal(address(solution), 10 wei); 
-        
+        vm.deal(address(solution), 10 wei);
+
         solution.solve(maskedPassword);
 
         // DONE: You should have obtained the flag for challenge #8

@@ -46,7 +46,7 @@ contract Challenge11Test is BaseTest {
         // The contract checks: random % 10 < count
         // If count is 10, this condition is always true regardless of the random value (0-9)
         // We also roll the block each time because the contract requires unique blocks.
-        for (uint i = 0; i < 10; i++) {
+        for (uint256 i = 0; i < 10; i++) {
             vm.roll(block.number + 1);
             challenge11.preMintFlag();
         }
@@ -58,7 +58,7 @@ contract Challenge11Test is BaseTest {
         // We need to be at (target + 1) so that blockhash(target) is available
         uint256 futureBlocks = challenge11.futureBlocks();
         uint256 targetBlockNumber = block.number + futureBlocks;
-        
+
         vm.roll(targetBlockNumber + 1);
 
         // Step 3: Get block data for the target block and RLP encode it

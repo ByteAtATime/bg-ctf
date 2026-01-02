@@ -30,7 +30,7 @@ contract Challenge10Test is BaseTest {
         // Step 2: Calculate target requirements
         // Req 1: Last hex char of Proxy must match last hex char of Player
         uint8 targetLast = uint8(abi.encodePacked(PLAYER)[19]) & 0xF;
-        
+
         // Req 2: First hex char of Proxy must match first hex char of Challenge Contract
         uint8 targetFirst = uint8(abi.encodePacked(address(challenge10))[0]) & 0xF0;
 
@@ -40,7 +40,7 @@ contract Challenge10Test is BaseTest {
         uint256 salt = 0;
         address proxyAddress;
 
-        while(true) {
+        while (true) {
             bytes32 hash = keccak256(
                 abi.encodePacked(
                     bytes1(0xff),
@@ -65,7 +65,7 @@ contract Challenge10Test is BaseTest {
         assembly {
             proxy := create2(0, add(bytecode, 0x20), mload(bytecode), salt)
         }
-        
+
         require(address(proxy) == proxyAddress, "Address mismatch");
         proxy.callMint(challenge10);
 

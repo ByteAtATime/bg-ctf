@@ -32,17 +32,17 @@ contract Challenge5Test is BaseTest {
         // 208 = 32 (length) + 32*5 (index 5) + 16 (halfway)
         // It reads the lower 16 bytes of index 5 and upper 16 bytes of index 6
         uint256[] memory data1 = new uint256[](7); // Need enough space
-        
+
         // We want the result to be `targetCounter` (which is small, so it fits in the lower bits of the 32-byte word)
         // The result word is composed of: [lower 16 bytes of data1[5]] + [upper 16 bytes of data1[6]]
         // Since Result is standard Big Endian uint256, the [lower 16 bytes of data1[5]] become the High bits of Result.
         // The [upper 16 bytes of data1[6]] become the Low bits of Result.
         // We want Result to be `targetCounter` (small number), so High bits should be 0.
         // Low bits should be `targetCounter`.
-        
+
         // 1. data1[5]'s lower 16 bytes should be 0
-        data1[5] = 0; 
-        
+        data1[5] = 0;
+
         // 2. data1[6]'s upper 16 bytes should contain `targetCounter`
         // Since `targetCounter` is a uint256, to put it in the upper 128 bits (16 bytes), we shift left.
         data1[6] = targetCounter << 128;

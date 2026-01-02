@@ -24,6 +24,20 @@ The solutions and guides are located in the `test/` directory, with each challen
 - [Challenge 11](./test/season1/challenge11)
 - [Challenge 12](./test/season1/challenge12)
 
+### Season 2
+- [Challenge 1](./test/season2/challenge1)
+- [Challenge 2](./test/season2/challenge2)
+- [Challenge 3](./test/season2/challenge3)
+- [Challenge 4](./test/season2/challenge4)
+- [Challenge 5](./test/season2/challenge5)
+- [Challenge 6](./test/season2/challenge6)
+- [Challenge 7](./test/season2/challenge7)
+- [Challenge 8](./test/season2/challenge8)
+- [Challenge 9](./test/season2/challenge9)
+- [Challenge 10](./test/season2/challenge10)
+- [Challenge 11](./test/season2/challenge11)
+- [Challenge 12](./test/season2/challenge12)
+
 ## Running the Solutions
 
 This repository uses [Foundry](https://getfoundry.sh/). If you would like to tinker with this repository, you should install Foundry and clone the repository:

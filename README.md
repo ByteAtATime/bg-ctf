@@ -49,11 +49,11 @@ git clone https://github.com/ByteAtATime/bg-ctf.git
 Then, you have to install the dependencies (be patient, this may take a while):
 
 ```bash
-foundry install
+forge install
 ```
 
 Finally, you can run the tests:
 
 ```bash
-foundry test
+forge test
 ```
